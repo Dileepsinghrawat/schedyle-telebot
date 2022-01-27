@@ -11,38 +11,8 @@
   "ADMIN1": {
       "description": "Bot's Admin id from https://t.me/userinfobot",
       "required": true
-    },
-  "ADMIN2": {
-      "description": "Addidtional Bot's Admin, leave 0 if not used",
-      "required": false,
-      "value": "0"
-    },
-  "ADMIN3": {
-      "description": "Addidtional Bot's Admin, leave 0 if not used",
-      "required": false,
-      "value": "0"
-    },
-  "ADMIN4": {
-      "description": "Addidtional Bot's Admin, leave 0 if not used",
-      "required": false,
-      "value": "0"
-    },
-  "ADMIN5": {
-      "description": "Addidtional Bot's Admin, leave 0 if not used",
-      "required": false,
-      "value": "0"
     }
   },
- "addons": [
-    {
-      "plan": "heroku-redis:hobby-dev",
-      "as": "Redis"
-    },
-    {
-      "plan": "heroku-redis:hobby-dev",
-      "as": "Cobalt"
-    }
-  ],
 "formation": {
     "bot": {
       "quantity": 1,
