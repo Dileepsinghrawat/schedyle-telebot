@@ -11,6 +11,15 @@ from credentials import token, admins
 bot = telebot.TeleBot(token)
 timers = ['-10', '+10', '-30', '+30']
 
+def send_hi(akhil):
+  bot.send_message(admins,text="Good")
+
+schedule.every(10).seconds.do(send_hi)
+
+
+while True:
+   schedule.run_pending()
+   time.sleep(1)
 
 def job_exists(text):
   a = schedule.jobs
@@ -66,6 +75,18 @@ def callback_buttons(call):
           bot.answer_callback_query(call.id, 'Minimal time for post schedule is 10 minutes!', show_alert=True)
         else:
           create_task(call.message, newtimer, True)
+  elif call.data == 'schedule':
+    m = re.search(' [0-9]* ', call.message.text)
+    if m:
+      p.set(str(int(m.group(0))) + 'post' + str(call.id), call.message.reply_to_message.text)
+     schedule.every(int(m.group(0))).minutes.do(jobqueue.put,
+                                                           functools.partial(announce,
+                                                                             call.message.reply_to_message.text))
+                bot.answer_callback_query(call.id, 'Will be posted every {} minutes'.format(m.group(0)))
+                markup = types.InlineKeyboardMarkup()
+                markup.add(types.InlineKeyboardButton('🚫 Cancel 🕒', callback_data='cancel'))
+                bot.edit_message_text('*Will be posted every {} minutes*'.format(m.group(0)), call.message.chat.id,
+                                      call.message.message_id, parse_mode='Markdown', reply_markup=markup)
 
 
 
