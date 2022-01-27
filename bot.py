@@ -55,5 +55,18 @@ def text_handling(message):
     else:
       bot.send_message(message.chat.id, text = 'Alhil',parse_mode='Markdown')
       
+@bot.callback_query_handler(func=lambda call: True)
+def callback_buttons(call):
+  if call.message:
+    if call.data in timers:
+      m = re.search(' [0-9]* ', call.message.text)
+      if m:
+        newtimer = eval((m.group(0) + call.data))
+        if newtimer < 10:
+          bot.answer_callback_query(call.id, 'Minimal time for post schedule is 10 minutes!', show_alert=True)
+        else:
+          create_task(call.message, newtimer, True)
+
+
 
 bot.polling(none_stop=True)
