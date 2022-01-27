@@ -22,4 +22,16 @@ def post_command(message):
   markup = types.ForceReply(selective=False)
   bot.send_message(message.chat.id, 'Reply me with message you want to schedule', reply_markup=markup)
 
+@bot.message_handler(content_types=['text'])
+def text_handling(message):
+  if message.reply_to_message:
+    if message.reply_to_message.text == 'Reply me with message you want to schedule':
+      if not job_exists(message.text):
+        create_task(message, 60)
+      else:
+        bot.send_message(message.chat.id, '*Post with the same text already exists!*',parse_mode='Markdown')
+    else:
+      bot.send_message(message.chat.id, text = 'Alhil',parse_mode='Markdown')
+      
+
 bot.polling(none_stop=True)
