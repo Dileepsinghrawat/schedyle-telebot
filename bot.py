@@ -11,16 +11,34 @@ from credentials import token, admins
 bot = telebot.TeleBot(token)
 timers = ['-10', '+10', '-30', '+30']
 
+ALL_TIMES = ["0:22:10"]
+
 def send_hi(akhil):
   bot.send_message(admins,text="Good")
 
-schedule.every(10).seconds.do(send_hi)
 
-
-while True:
-   schedule.run_pending()
-   time.sleep(1)
-
+def worker_main():
+    while True:
+        job_func = jobqueue.get()
+        job_func()
+        jobqueue.task_done()
+ 
+ 
+jobqueue = queue.Queue()
+worker_thread = threading.Thread(target=worker_main)
+worker_thread.start()
+ 
+def scheduler_func():
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
+ 
+sched_thread = threading.Thread(name='scheduler', target=scheduler_func)
+sched_thread.start()
+ 
+for scheduled_post in ALL_TIMES:
+  schedule.every().day.at(scheduled_post).do(send_hiaq)
+  
 def job_exists(text):
   a = schedule.jobs
   for job in a:
