@@ -37,7 +37,7 @@ sched_thread = threading.Thread(name='scheduler', target=scheduler_func)
 sched_thread.start()
  
 for scheduled_post in ALL_TIMES:
-  schedule.every().day.at(scheduled_post).do(send_hiaq)
+  schedule.every().day.at(scheduled_post).do(send_hi)
   
 def job_exists(text):
   a = schedule.jobs
